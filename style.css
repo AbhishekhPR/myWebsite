@@ -477,3 +477,11 @@ html {
       min-width: 100%;
     }
   }
+  .simple-footer {
+    background-color: var(--surface-color); /* or choose your preferred color */
+    color: var(--text-color);
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9rem;
+  }
+  
