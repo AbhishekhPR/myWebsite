@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishekh P R - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --primary-color: #00bcd4;
+        --background-color: #0a0a0a;
+        --surface-color: #1a1a1a;
+        --text-color: #ffffff;
+        --text-secondary: #888888;
+        --card-background: rgba(255, 255, 255, 0.05);
+        --section-padding: 80px 0;
+        --nav-background: rgba(10, 10, 10, 0.95);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --hover-transform: translateY(-5px);
+    }
+
+    /* First, modify your root variables to include light mode colors */
+
+    /* Light mode class overrides */
+    body.light-mode {
+        --background-color: #ffffff;
+        --surface-color: #f5f5f5;
+        --text-color: #333333;
+        --text-secondary: #666666;
+        --card-background: rgba(0, 0, 0, 0.02);
+        --nav-background: rgba(255, 255, 255, 0.95);
+        --border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Light mode specific styles */
+    .light-mode .background-container {
+        background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+    }
+
+    .light-mode .node {
+        background: rgba(0, 188, 212, 0.5);
+        box-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+    }
+
+    .light-mode .connection {
+        background: linear-gradient(90deg, 
+            rgba(0, 188, 212, 0.1) 0%,
+            rgba(0, 188, 212, 0.2) 50%,
+            rgba(0, 188, 212, 0.1) 100%);
+    }
+
+    .light-mode .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .light-mode .project-card {
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .light-mode .skill-item {
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+    }
+
+    .light-mode .section-title::after {
+        background-color: var(--primary-color);
+    }
+
+    /* Ensure text remains visible in light mode */
+    .light-mode .navbar a {
+        color: var(--text-color);
+    }
+
+    .light-mode .theme-toggle {
+        color: var(--text-color);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: transform 0.3s ease;
+    }
+
+    /* Background Animation Styles */
+    .background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+        overflow: hidden;
+    }
+
+    .node {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(64, 224, 208, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 10px rgba(64, 224, 208, 0.3);
+    }
+
+    .connection {
+        position: absolute;
+        height: 1px;
+        background: linear-gradient(90deg, 
+            rgba(64, 224, 208, 0.1) 0%,
+            rgba(64, 224, 208, 0.2) 50%,
+            rgba(64, 224, 208, 0.1) 100%);
+        transform-origin: left center;
+        pointer-events: none;
+    }
+
+    /* Rest of your existing styles */
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+    }
+
+    /* Your existing styles for navbar, sections, etc. */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        background: transparent;
+    }
+
+    /* New scrolled state styles */
+    .navbar.scrolled {
+        background: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px 40px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-item {
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        padding: 5px 0;
+        transition: color 0.3s ease;
+    }
+
+    .nav-item:hover {
+        color: var(--primary-color);
+    }
+
+    .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+
+    .nav-item:hover::after {
+        width: 100%;
+    }
+    .theme-toggle {
+        background: none;
+        border: none;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 15px 20px;
+        }
+        .nav-links {
+            gap: 15px;
+        }
+    }
+
+    /* Home Section Styles */
+    .home-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+    }
+
+    .home-content {
+        max-width: 600px;
+    }
+
+    .home-content h1 {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+    }
+
+    .home-content p {
+        font-size: 1.5rem;
+        color: var(--text-secondary);
+    }
+
+    /* Add the rest of your existing styles here */
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <!-- The network animation will be generated here -->
+    </div>
+
+    <div class="content-wrapper">
+        <nav class="navbar">    
+            <div class="nav-links">
+                <a href="#home" class="nav-item active">Home</a>
+                <a href="#about" class="nav-item">About</a>
+                <a href="#projects" class="nav-item">Work</a>
+                <a href="#skills" class="nav-item">Skills</a>
+                <a href="#contact" class="nav-item">Contact</a>
+            </div>
+            <div class="menu-btn">
+                <div class="menu-btn__burger"></div>
+            </div>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i></button>
+        </nav>
+        <script>
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        
+            document.getElementById('themeToggle').addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('light-mode')) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                } else {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            });
+            </script>
+
+        <!-- Home Section -->
+
+        
+        <section id="home" class="home-section">
+            <div class="home-content">
+                <h1>Abhishekh P R</h1>
+                <p>Software Developer</p>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <style>
+                            p {
+                              margin-bottom: 40px;
+                            }
+                          </style>
+                        <p>Hello, I'm Abhishekh P R, a passionate software developer and data science enthusiast. I focus on creating robust solutions that streamline processes and enhance user experiences. My journey in technology has equipped me with deep expertise in Python, neural networks, and data visualization, as well as a solid grounding in statistical analysis and gradient boosting algorithms. I thrive on continuous learning and innovation, always eager to collaborate with forward-thinking teams to push the boundaries of what's possible. Whether it's building intelligent systems or crafting elegant, efficient code, I’m dedicated to driving meaningful impact in the tech industry.</p> 
+
+                        <div class="resume-container">
+                            <a href="Abhishekh P R(Resume).pdf" target ="_blank" class="resume-button" download>
+                                <i class="fas fa-download"></i> Download Resume
+                            </a>
+                        </div>                           
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Work</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>IPL EDA</h3>
+                            <p>Data analysis of IPL datasets using Python.</p>
+                            <div class="project-links">
+                                <a href="ipl-eda.html" class="btn">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>YouTube Skeleton Clone</h3>
+                            <p>Serverless video processing system with GCP and Firebase.</p>
+                            <div class="project-links">
+                                <a href="youtube-skeleton.html" class="btn">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-content">
+                            <h3>Leetcode</h3>
+                            <p>Solving algorithmic challenges and sharpening my problem-solving skills through LeetCode.</p>
+                            <div class="project-links">
+                                <a href="https://leetcode.com/u/abhishekhravikumar/" target="_blank" class="btn">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!-- View Certification Link -->
+<div class="view-certification">
+    <a href="#" class="certification-link" id="openModal">View Certification</a>
+  </div>
+  
+  <!-- Certification Modal -->
+  <div id="certificationModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Certifications</h2>
+      <!-- Certification Cards Container -->
+      <div class="certification-cards">
+        <!-- Certification Card 1 -->
+        <div class="certification-card">
+          <h3>Data Structures and Algorithms in Python Bootcamp</h3>
+          <p>I enhanced my proficiency in Python's core data structures and algorithms, enabling me to design efficient solutions and write cleaner code.</p>
+          <a href="https://www.udemy.com/certificate/UC-f9190fcc-396d-4a52-8a75-8f43a0cc57cc/" class="full-story">View</a>
+        </div>
+        <!-- Certification Card 2 -->
+        <div class="certification-card">
+          <h3>Python for Data Science and Machine Learning </h3>
+          <p>I advanced my skills in data manipulation, visualization, and machine learning with Python, empowering me to build data-driven solutions.</p>
+          <a href="https://www.udemy.com/certificate/UC-9aedb537-a83f-4554-8db4-e3cea717aabd/" class="full-story">View</a>
+        </div>
+        <!-- Certification Card 3 -->
+        <div class="certification-card">
+          <h3>Neural Networks and Deep Learning</h3>
+          <p>I advanced my expertise in neural network architectures and training techniques, empowering me to develop robust models for complex applications.</p>
+          <a href="https://www.coursera.org/learn/neural-networks-deep-learning?action=enroll&aid=true" class="full-story">View</a>
+        </div>
+        <div class="certification-card">
+            <h3>Leetcode</h3>
+            <p>I refined my problem-solving skills by tackling algorithm challenges, enhancing my coding efficiency and analytical thinking.</p>
+            <a href="https://leetcode.com/u/abhishekhravikumar/" class="full-story">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<style>
+    /* View Certification Link Styles */
+.view-certification {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.certification-link {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  border: 2px solid var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.certification-link:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Modal Styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: var(--card-background);
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Close Button */
+.close {
+  color: var(--primary-color);
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+/* Certification Cards Container */
+.certification-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Individual Certification Card */
+.certification-card {
+  background: #000; /* Solid black background */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 250px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+
+.certification-card:hover {
+  transform: translateY(-5px);
+}
+
+.certification-card h3 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.certification-card p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 10px 0;
+}
+
+.full-story {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.full-story:hover {
+  color: #0097a7;
+}
+
+</style>           
+<script>
+    // Get modal element
+    var modal = document.getElementById("certificationModal");
+    
+    // Get open modal link
+    var openModal = document.getElementById("openModal");
+    
+    // Get close button element
+    var closeBtn = document.getElementsByClassName("close")[0];
+    
+    // Open modal on link click
+    openModal.addEventListener("click", function(e) {
+      e.preventDefault();
+      modal.style.display = "block";
+    });
+    
+    // Close modal on close button click
+    closeBtn.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+    
+    // Close modal when clicking outside the modal content
+    window.addEventListener("click", function(e) {
+      if (e.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+  
+        </section>
+
+        <section id="skills" class="skills-section">
+            <div class="skills-container">
+                <h2 class="section-title">Skills</h2>
+              <div class="skills-track">
+                <!-- First set -->
+                <div class="skill-item">
+                  <i class="fab fa-python"></i>
+                  <span>Python</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-html5"></i>
+                  <span>HTML5</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-css3-alt"></i>
+                  <span>CSS3</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-js"></i>
+                  <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-brain"></i>
+                  <span>Neural Networks & Deep Learning</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>Machine Learning Operations</span>
+                </div>
+                <!-- Second set -->
+                <div class="skill-item">
+                  <i class="fab fa-python"></i>
+                  <span>Python</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-html5"></i>
+                  <span>HTML5</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-css3-alt"></i>
+                  <span>CSS3</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-js"></i>
+                  <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-brain"></i>
+                  <span>Neural Networks & Deep Learning</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>Machine Learning Operations</span>
+                </div>
+                <!-- Third set -->
+                <div class="skill-item">
+                  <i class="fab fa-python"></i>
+                  <span>Python</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-html5"></i>
+                  <span>HTML5</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-css3-alt"></i>
+                  <span>CSS3</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-js"></i>
+                  <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-brain"></i>
+                  <span>Neural Networks & Deep Learning</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-cogs"></i>
+                  <span>Machine Learning Operations</span>
+                </div>
+              </div>
+            </div>
+            <style>
+              .skills-section {
+                width: 100%;
+                overflow: hidden;
+                padding: 20px 0;
+              }
+          
+              .skills-container {
+                width: 100%;
+                overflow: hidden;
+                mask-image: linear-gradient(
+                  to right,
+                  transparent,
+                  black 10%,
+                  black 90%,
+                  transparent
+                );
+                -webkit-mask-image: linear-gradient(
+                  to right,
+                  transparent,
+                  black 10%,
+                  black 90%,
+                  transparent
+                );
+              }
+          
+              .skills-track {
+                display: flex;
+                width: fit-content;
+                gap: 100px;
+                padding: 20px 50px;
+                animation: infiniteScroll 40s linear infinite;
+              }
+          
+              .skill-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 100px;
+                text-align: center;
+                transition: transform 0.3s ease;
+              }
+          
+              .skill-item i {
+                font-size: 2.5rem;
+                color: var(--primary-color);
+                margin-bottom: 10px;
+              }
+          
+              .skill-item span {
+                color: var(--text-color);
+                font-weight: 500;
+                font-size: 1.1rem;
+                max-width: 150px;
+              }
+          
+              @keyframes infiniteScroll {
+                from {
+                  transform: translateX(0);
+                }
+                to {
+                  transform: translateX(calc(-100% / 3));
+                }
+              }
+          
+              .skills-container:hover .skills-track {
+                animation-play-state: paused;
+              }
+            </style>
+          </div>
+    </div>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-cards">
+                <!-- Email Card -->
+                <div class="card">
+                  <i class="fas fa-envelope"></i>
+                  <h3>Email</h3>
+                  <p>
+                    <a href="mailto:abhishekhravikumar@gmail.com">
+                      abhishekhravikumar@gmail.com
+                    </a>
+                  </p>
+                </div>
+              
+                <!-- Social Card -->
+                <div class="card">
+                  <i class="fas fa-share-alt"></i>
+                  <h3>Social</h3>
+                  <div class="social-links">
+                    <a href="https://linkedin.com/in/abhishekhravikumar/" target="_blank">
+                      <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/AbhishekhPR" target="_blank">
+                      <i class="fab fa-github"></i>
+                    </a>      
+                    <a href="https://instagram.com/abhishekhpr" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                      </a>         
+                  </div>
+                </div>
+              
+                <!-- Location Card -->
+                <div class="card">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <h3>Location</h3>
+                  <p>Bangalore, India</p>
+                </div>
+              </div>
+              
+            <div class="contact-form-container">
+                <form action="https://formspree.io/f/mgedpppw" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" required placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" required placeholder="Write a message"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // Network animation code
+    class Node {
+        constructor(x, y, z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.element = document.createElement('div');
+            this.element.className = 'node';
+            this.connections = [];
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.vz = (Math.random() - 0.5) * 0.3;
+        }
+
+        update(container) {
+            const perspective = 1000;
+            const scale = perspective / (perspective + this.z);
+            
+            const screenX = this.x * scale + container.clientWidth / 2;
+            const screenY = this.y * scale + container.clientHeight / 2;
+            
+            this.element.style.transform = `translate(${screenX}px, ${screenY}px) scale(${scale})`;
+            this.element.style.opacity = scale * 0.8;
+            
+            this.x += this.vx;
+            this.y += this.vy;
+            this.z += this.vz;
+            
+            if (Math.abs(this.x) > 300) this.vx *= -1;
+            if (Math.abs(this.y) > 300) this.vy *= -1;
+            if (Math.abs(this.z) > 300) this.vz *= -1;
+        }
+    }
+
+    class Connection {
+        constructor(nodeA, nodeB) {
+            this.nodeA = nodeA;
+            this.nodeB = nodeB;
+            this.element = document.createElement('div');
+            this.element.className = 'connection';
+        }
+
+        update(container) {
+            const perspective = 1000;
+            const scaleA = perspective / (perspective + this.nodeA.z);
+            const scaleB = perspective / (perspective + this.nodeB.z);
+            
+            const ax = this.nodeA.x * scaleA + container.clientWidth / 2;
+            const ay = this.nodeA.y * scaleA + container.clientHeight / 2;
+            const bx = this.nodeB.x * scaleB + container.clientWidth / 2;
+            const by = this.nodeB.y * scaleB + container.clientHeight / 2;
+            
+            const dx = bx - ax;
+            const dy = by - ay;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx);
+            
+            this.element.style.width = `${distance}px`;
+            this.element.style.transform = `translate(${ax}px, ${ay}px) rotate(${angle}rad)`;
+            this.element.style.opacity = Math.max(0, 1 - distance / 300) * 0.5;
+        }
+    }
+
+    function initNetwork() {
+        const container = document.querySelector('.background-container');
+        const nodes = [];
+        const connections = [];
+        
+        for (let i = 0; i < 30; i++) {
+            const node = new Node(
+                (Math.random() - 0.5) * 600,
+                (Math.random() - 0.5) * 600,
+                (Math.random() - 0.5) * 600
+            );
+            container.appendChild(node.element);
+            nodes.push(node);
+        }
+        
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                if (Math.random() < 0.2) {
+                    const connection = new Connection(nodes[i], nodes[j]);
+                    container.appendChild(connection.element);
+                    connections.push(connection);
+                }
+            }
+        }
+        
+        function animate() {
+            nodes.forEach(node => node.update(container));
+            connections.forEach(connection => connection.update(container));
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    window.addEventListener('load', initNetwork);
+    </script>
+</body>
+</html>
