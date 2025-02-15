@@ -418,4 +418,62 @@ html {
     color: #fff;
   }
 
-  
+  /* Mobile Styles */
+@media (max-width: 768px) {
+    /* Adjust Navbar */
+    .navbar {
+      padding: 10px 20px;
+    }
+    .nav-links {
+      flex-direction: column;
+      background-color: var(--nav-background);
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none; /* Hidden by default, toggled via JS */
+    }
+    .nav-links.active {
+      display: flex;
+    }
+    .nav-links a {
+      margin: 10px 0;
+    }
+    
+    /* Adjust Home Section Text */
+    .home-content h1 {
+      font-size: 3rem;
+    }
+    .home-content p {
+      font-size: 1.2rem;
+    }
+    
+    /* Container Padding */
+    .container {
+      padding: 0 10px;
+    }
+    
+    /* Projects Grid: Single Column Layout */
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    /* Skills Section Adjustments */
+    .skills-track {
+      gap: 50px;
+      padding: 20px 20px;
+    }
+    
+    /* Certification Modal Adjustments */
+    .modal-content {
+      width: 95%;
+    }
+    .certification-cards {
+      flex-direction: column;
+    }
+    .certification-card {
+      flex: 1 1 100%;
+      min-width: 100%;
+    }
+  }
